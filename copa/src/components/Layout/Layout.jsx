@@ -6,37 +6,38 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function Layout(){
-    let sorteados = []
-    let valorMaximo = 32
-    const pegarIndex = () => {
-        if (sorteados.length == valorMaximo) {
-            if (true) sorteados = [];
-            else return;
-        }
-        var sugestao = Math.ceil(Math.random() * valorMaximo); 
-        while (sorteados.indexOf(sugestao) >= 0) { 
-            sugestao = Math.ceil(Math.random() * valorMaximo);
-        }
-        sorteados.push(sugestao); 
-        return sugestao; 
-        
-    } 
-    const [informacoes, setInformacoes] = useState([]) 
+    
+   const [informacoes, setInformacoes] = useState([]) 
 
    const apiCopa = () =>{ axios.get('https://estagio.geopostenergy.com/WorldCup/GetAllTeams', {
     headers: {
       'git-user': `SolracSiul`
     }
     }).then((res) => {
-    console.log(res.data)
+    console.log(res.data.Result)
+    setInformacoes(res.data.Result)
     }).catch((error) => {
     console.error(error)
     })
 }
    useEffect(() =>{
     apiCopa()
-   })
+   },[])
 
+   let sorteados = []
+   let valorMaximo = 32
+   const pegarIndex = () => {
+       if (sorteados.length === valorMaximo) {
+           if (true) sorteados = [];
+       }
+       var sugestao = Math.ceil(Math.random() * valorMaximo); 
+       while (sorteados.indexOf(sugestao) >= 0) { 
+           sugestao = Math.ceil(Math.random() * valorMaximo);
+       }
+       sorteados.push(sugestao); 
+       return sugestao;
+   }
+   
     return(
         <>
         
@@ -44,94 +45,94 @@ export default function Layout(){
         <Div>
             <DivCard>
                 <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
             </DivCard>
             <DivCard>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
             </DivCard>
             <DivCard>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
             </DivCard>
             <DivCard>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-            </DivCard>
-        </Div>
-
-        <Div>
-            <DivCard>
-                {/* <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes> */}
-            </DivCard>
-            <DivCard>
-                {/* <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes> */}
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
             </DivCard>
         </Div>
 
         <Div>
             <DivCard>
-                {/* <Selecoes name={pegarIndex()}></Selecoes> */}
+                {/* <Selecoes></Selecoes>
+                <Selecoes></Selecoes> */}
+            </DivCard>
+            <DivCard>
+                {/* <Selecoes></Selecoes>
+                <Selecoes></Selecoes> */}
             </DivCard>
         </Div>
 
         <Div>
             <DivCard>
-            {/* <Selecoes name={pegarIndex()}></Selecoes> */}
+                {/* <Selecoes></Selecoes> */}
             </DivCard>
         </Div>
 
         <Div>
             <DivCard>
-                {/* <Selecoes name={pegarIndex()}></Selecoes> */}
+            {/* <Selecoes></Selecoes> */}
             </DivCard>
         </Div>
 
         <Div>
             <DivCard>
-                {/* <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes> */}
-            </DivCard>
-            <DivCard>
-                {/* <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes> */}
+                {/* <Selecoes></Selecoes> */}
             </DivCard>
         </Div>
 
         <Div>
             <DivCard>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
+                {/* <Selecoes></Selecoes>
+                <Selecoes></Selecoes> */}
             </DivCard>
             <DivCard>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
+                {/* <Selecoes></Selecoes>
+                <Selecoes></Selecoes> */}
+            </DivCard>
+        </Div>
+
+        <Div>
+            <DivCard>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
             </DivCard>
             <DivCard>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
             </DivCard>
             <DivCard>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes name={pegarIndex()}></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+            </DivCard>
+            <DivCard>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
+                <Selecoes></Selecoes>
             </DivCard>
         </Div>
        </Container>
