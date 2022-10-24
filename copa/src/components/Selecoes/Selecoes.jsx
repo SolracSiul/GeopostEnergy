@@ -1,11 +1,11 @@
 import React from "react";
 
-import { Nome } from "./styles";
+// import { Nome } from "./styles";
 
-export default function Selecoes({name}){
+export default function Selecoes(){
     return (
         <>
-        <Nome>{name}</Nome>
+            <b></b>
         </>
     )
 }

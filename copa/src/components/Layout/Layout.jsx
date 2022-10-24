@@ -1,5 +1,5 @@
 
-import { Container, Div, DivCard} from './styles';
+import { Container, Div, DivCard, NomeSelecao, Li} from './styles';
 import Selecoes from '../Selecoes/Selecoes';
 
 import { useEffect, useState } from 'react';
@@ -7,65 +7,76 @@ import axios from 'axios';
 
 export default function Layout(){
     
-   const [informacoes, setInformacoes] = useState([]) 
+   
 
-   const apiCopa = () =>{ axios.get('https://estagio.geopostenergy.com/WorldCup/GetAllTeams', {
+   const apiCopa =  () =>{  axios.get('https://estagio.geopostenergy.com/WorldCup/GetAllTeams', {
     headers: {
       'git-user': `SolracSiul`
     }
     }).then((res) => {
-    console.log(res.data.Result)
-    setInformacoes(res.data.Result)
+    console.log(res)
+    setInformacoes(pegarIndex(res.data.Result))
+    console.log(informacoes)
     }).catch((error) => {
     console.error(error)
     })
-}
+    }
+   const [informacoes, setInformacoes] = useState([]) 
+
+    const pegarIndex = (informacoes) => {
+        for (var i = 31; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = informacoes[i];
+            informacoes[i] = informacoes[j];
+            informacoes[j] = temp;
+        }
+        return informacoes
+        }
+    
+
    useEffect(() =>{
     apiCopa()
-   },[])
+},[0])
 
-   let sorteados = []
-   let valorMaximo = 32
-   const pegarIndex = () => {
-       if (sorteados.length === valorMaximo) {
-           if (true) sorteados = [];
-       }
-       var sugestao = Math.ceil(Math.random() * valorMaximo); 
-       while (sorteados.indexOf(sugestao) >= 0) { 
-           sugestao = Math.ceil(Math.random() * valorMaximo);
-       }
-       sorteados.push(sugestao); 
-       return sugestao;
-   }
-   
     return(
         <>
-        
        <Container>
         <Div>
             <DivCard>
-                <Selecoes name={pegarIndex()}></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
+                {<ul>
+                    {informacoes.slice(0,4).map(info =>(
+                        <Li key={info.Token}>
+                            <NomeSelecao>{info.Name}</NomeSelecao>
+                        </Li>
+                    ))}
+                </ul>}
             </DivCard>
             <DivCard>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
+            { <ul>
+                    {informacoes.slice(4,8).map(info =>(
+                        <Li key={info.Token}>
+                            <NomeSelecao>{info.Name}</NomeSelecao>
+                        </Li>
+                    ))}
+                </ul>}
             </DivCard>
             <DivCard>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
+            { <ul>
+                    {informacoes.slice(8,12).map(info =>(
+                        <Li key={info.Token}>
+                            <NomeSelecao>{info.Name}</NomeSelecao>
+                        </Li>
+                    ))}
+                </ul>}
             </DivCard>
             <DivCard>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
+            { <ul>
+                    {informacoes.slice(12,16).map(info =>(
+                        <Li key={info.Token}>
+                            <NomeSelecao>{info.Name}</NomeSelecao>
+                        </Li>
+                    ))}
+                </ul>}
             </DivCard>
         </Div>
 
@@ -111,28 +122,40 @@ export default function Layout(){
 
         <Div>
             <DivCard>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
+            { <ul>
+                    {informacoes.slice(16,20).map(info =>(
+                        <Li key={info.Token}>
+                            <NomeSelecao>{info.Name}</NomeSelecao>
+                        </Li>
+                    ))}
+                </ul>}
             </DivCard>
             <DivCard>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
+            { <ul>
+                    {informacoes.slice(20,24).map(info =>(
+                        <Li key={info.Token}>
+                            <NomeSelecao>{info.Name}</NomeSelecao>
+                        </Li>
+                    ))}
+                </ul>}
             </DivCard>
             <DivCard>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
+            { <ul>
+                    {informacoes.slice(24,28).map(info =>(
+                        <Li key={info.Token}>
+                            <NomeSelecao>{info.Name}</NomeSelecao>
+                        </Li>
+                    ))}
+                </ul>}
             </DivCard>
             <DivCard>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
-                <Selecoes></Selecoes>
+            { <ul>
+                    {informacoes.slice(28,32).map(info =>(
+                        <Li key={info.Token}>
+                            <NomeSelecao>{info.Name}</NomeSelecao>
+                        </Li>
+                    ))}
+                </ul>}
             </DivCard>
         </Div>
        </Container>

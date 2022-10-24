@@ -28,7 +28,15 @@ export const DivCard = styled.div`
     display: flex;
     flex-direction: column;
     text-align: center;
+    &ul > li> h2{
+        font-size: 6px;
+        color: red;
+    }
 `
 export const NomeSelecao = styled.small`
   font-size: 8px;
+`
+export const Li = styled.li`
+    display: flex;
+    flex-direction: column;
 `
