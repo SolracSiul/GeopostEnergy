@@ -32,11 +32,9 @@ export default function Layout(){
         }
         return informacoes
         }
-    
-
    useEffect(() =>{
     apiCopa()
-},[0])
+},[])
 
     return(
         <>
