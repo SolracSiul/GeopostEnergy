@@ -41,3 +41,34 @@ export const Li = styled.li`
     display: flex;
     flex-direction: column;
 `
+export const Tabelas = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    background-color: red;
+    max-width: 1376px;
+    margin: 0 auto;
+`
+export const Tabela = styled.table`
+    padding-top: 12px;
+    background-color: #5c5757;
+`
+export const TR = styled.tr`
+    background-color: #97dc8c;
+`
+export const TH = styled.th`
+    background-color: #9595de;
+`
+export const TD = styled.td`
+    background-color: #9595de;
+`
+export const DivResult = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+export const Result = styled.h2`
+    color:red;
+    font-size: 20px;
+`

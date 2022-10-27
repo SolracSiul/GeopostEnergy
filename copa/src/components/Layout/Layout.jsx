@@ -1,8 +1,7 @@
 
-import { Container, Div, DivCard, NomeSelecao, Li} from './styles';
-import Selecoes from '../Selecoes/Selecoes';
+import { Container, Div, DivCard, NomeSelecao, Li, Tabelas, TD, TH, TR, Tabela, DivResult, Result} from './styles';
 
-import { useEffect, useState, useRef, useLayoutEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function Layout(){
@@ -10,18 +9,19 @@ export default function Layout(){
     // const containerRef = useRef(null);
     // useEffect(() => console.log(typeof containerRef.current))
 
-   const apiCopa =  () =>{  axios.get('https://estagio.geopostenergy.com/WorldCup/GetAllTeams', {
-    headers: {
-      'git-user': `SolracSiul`
-    }
+    const apiCopa = async () => {
+          await axios.get('https://estagio.geopostenergy.com/WorldCup/GetAllTeams', {
+            headers: {
+        'git-user': `SolracSiul`
+        }
     }).then((res) => {
-    // console.log(res)
-    setInformacoes(pegarIndex(res.data.Result))
+    setInformacoes(pegarIndex(res.data.Result));
     }).catch((error) => {
     console.error(error)
     })
     }
    const [informacoes, setInformacoes] = useState([]) 
+   const [grupoA, setgrupoA] = useState([])
 
     const pegarIndex = (informacoes) => {
         for (var i = 31; i > 0; i--) {
@@ -32,106 +32,70 @@ export default function Layout(){
         }
         return informacoes
     }
-        
+
    useEffect(() =>{
     apiCopa()
 },[])
-    const gerarNumero = () =>{
-        let numeroAlet = (Math.random() * 10).toFixed(0);
-        return numeroAlet
-    }
-    const definirVencedoresGrupoA = () => {
-        let grupoA = informacoes.slice(0,4).map((x) =>(x.Name))
-        let time1, time2, time3, time4;
-        time1 = grupoA[0]
-        time2 = grupoA[1]
-        time3 = grupoA[2]
-        time4 = grupoA[3]
-        
-        let pntsTime1, pntsTime2,pntsTime3, pntsTime4;
-        pntsTime1 = gerarNumero() + 100;
-        pntsTime2 = gerarNumero()
-        pntsTime3 = gerarNumero()
-        pntsTime4 = gerarNumero()
-        
-        console.log(time1)
-        console.log(time2)
-        console.log(time3)
-        console.log(time4)
-        console.log(pntsTime1)
-        if(pntsTime1 > (pntsTime2 && pntsTime3 && pntsTime4)){
-            return time1
+    // //grupo1
+    // let time1 = 'a'; let time2 = 'a';let time3 = 'a';let time4 = 'a'; let pntsTime1; let pntsTime2; let pntsTime3; let pntsTime4;
+    // //grupo2
+    let copaDoMundo = {}
+    let resultados = {}
+
+    const inserirGeral = (chave, min,max) => {
+        let inserirCA = informacoes.slice(min,max).map((x)=> (x.Name))
+        copaDoMundo[chave] = inserirCA
+        for(let i =0; i < 4; i++){
+            inserirResultado(inserirCA[i])
         }
     }
-    const definirVencedoresGrupoB = () => {
-        let grupoB = informacoes.slice(4,8).map((x) =>(x.Name))
-        let time1, time2, time3, time4;
-        time1 = grupoB[0]
-        time2 = grupoB[1]
-        time3 = grupoB[2]
-        time4 = grupoB[3]
-        
-        let pntsTime1, pntsTime2,pntsTime3, pntsTime4;
-        pntsTime1 = gerarNumero() + 100;
-        pntsTime2 = gerarNumero()
-        pntsTime3 = gerarNumero()
-        pntsTime4 = gerarNumero()
-        
-        console.log(time1)
-        console.log(time2)
-        console.log(time3)
-        console.log(time4)
-        console.log(pntsTime1)
-        if(pntsTime1 > (pntsTime2 && pntsTime3 && pntsTime4)){
-            return time1
+    const inserirResultado = (pais) => {
+        resultados[pais] = [0,0,0,0]
+    }    
+    const chamarTimes = () => {
+        const alphabet = ["A","B","C","D","E","F","G","H"]
+        let min;let max;
+        [min,max] = [0,4] 
+        for(let i = 0; i <alphabet.length; i++){
+            inserirGeral(alphabet[i],min, max)
+            min += 4;
+            max +=4;
+        }
+        console.log(copaDoMundo)
+        console.log(resultados)
+    }
+   
+    chamarTimes()
+    const gerarJogo = () =>{
+        let grupoDaVez = copaDoMundo['A'];
+        let numeroTime1, numeroTime2;
+        for(let i=0; i < 4; i++){
+            for(let j = i+1; j < 4; j++){
+                while(true){
+                    numeroTime1 = Math.floor(Math.random() * 10)
+                    numeroTime2 = Math.floor(Math.random() * 10)
+                    if(numeroTime1 !== numeroTime2){
+                        break
+                    }
+                }
+                if(numeroTime1 > numeroTime2){
+                    resultados[grupoDaVez[i]][0] += 3
+                    resultados[grupoDaVez[i]][1] += 1
+                    resultados[grupoDaVez[i]][3] += numeroTime1
+                    resultados[grupoDaVez[j]][2] += 1;
+                    resultados[grupoDaVez[j]][3] += numeroTime2;
+                }else{
+                    resultados[grupoDaVez[j]][0] += 3
+                    resultados[grupoDaVez[j]][1] += 1
+                    resultados[grupoDaVez[j]][3] += numeroTime2
+                    resultados[grupoDaVez[i]][2] += 1;
+                    resultados[grupoDaVez[i]][3] += numeroTime1;
+                }
+            }
         }
     }
-    const definirVencedoresGrupoC = () => {
-        let grupoC = informacoes.slice(8,12).map((x) =>(x.Name))
-        let time1, time2, time3, time4;
-        time1 = grupoC[0]
-        time2 = grupoC[1]
-        time3 = grupoC[2]
-        time4 = grupoC[3]
-        
-        let pntsTime1, pntsTime2,pntsTime3, pntsTime4;
-        pntsTime1 = gerarNumero() + 100;
-        pntsTime2 = gerarNumero()
-        pntsTime3 = gerarNumero()
-        pntsTime4 = gerarNumero()
-        
-        console.log(time1)
-        console.log(time2)
-        console.log(time3)
-        console.log(time4)
-        console.log(pntsTime1)
-        if(pntsTime1 > (pntsTime2 && pntsTime3 && pntsTime4)){
-            return time1
-        }
-    }
-    const definirVencedoresGrupoD = () => {
-        let grupoD = informacoes.slice(12,16).map((x) =>(x.Name))
-        let time1, time2, time3, time4;
-        time1 = grupoD[0]
-        time2 = grupoD[1]
-        time3 = grupoD[2]
-        time4 = grupoD[3]
-        
-        let pntsTime1, pntsTime2,pntsTime3, pntsTime4;
-        pntsTime1 = gerarNumero() + 100;
-        pntsTime2 = gerarNumero()
-        pntsTime3 = gerarNumero()
-        pntsTime4 = gerarNumero()
-        
-        console.log(time1)
-        console.log(time2)
-        console.log(time3)
-        console.log(time4)
-        console.log(pntsTime1)
-        if(pntsTime1 > (pntsTime2 && pntsTime3 && pntsTime4)){
-            return time1
-        }
-    }
+    gerarJogo()
+    
     return(
         <>
        <Container>
@@ -176,17 +140,11 @@ export default function Layout(){
 
         <Div>
             <DivCard>
-                <NomeSelecao>{definirVencedoresGrupoA()}</NomeSelecao>
-                <NomeSelecao>{definirVencedoresGrupoB()}</NomeSelecao>
+                <NomeSelecao></NomeSelecao>
+                <NomeSelecao></NomeSelecao>
             </DivCard>
             <DivCard>
-                <NomeSelecao>{definirVencedoresGrupoC()}</NomeSelecao>
-                <NomeSelecao>{definirVencedoresGrupoD()}</NomeSelecao>
-            </DivCard>
-        </Div>
-
-        <Div>
-            <DivCard>
+                <NomeSelecao></NomeSelecao>
                 <NomeSelecao></NomeSelecao>
             </DivCard>
         </Div>
@@ -194,6 +152,12 @@ export default function Layout(){
         <Div>
             <DivCard>
                 <NomeSelecao></NomeSelecao>
+            </DivCard>
+        </Div>
+
+        <Div>
+            <DivCard>
+                <NomeSelecao>abacate:</NomeSelecao>
             </DivCard>
         </Div>
 
@@ -205,12 +169,12 @@ export default function Layout(){
 
         <Div>
             <DivCard>
-                <NomeSelecao>{definirVencedoresGrupoB()}</NomeSelecao>
-                <NomeSelecao>{definirVencedoresGrupoA()}</NomeSelecao>
+                <NomeSelecao></NomeSelecao>
+                <NomeSelecao></NomeSelecao>
             </DivCard>
             <DivCard>
-                <NomeSelecao>{definirVencedoresGrupoB()}</NomeSelecao>
-                <NomeSelecao>{definirVencedoresGrupoA()}</NomeSelecao>
+                <NomeSelecao></NomeSelecao>
+                <NomeSelecao></NomeSelecao>
             </DivCard>
         </Div>
 
@@ -253,9 +217,385 @@ export default function Layout(){
             </DivCard>
         </Div>
        </Container>
-       <div>
+        <DivResult>
+            <Result>Resultados</Result>
+        </DivResult>
+       <Tabelas>
+                
+            <Tabela>
+                <tbody>
+                    <TR>
+                        <TH>País</TH>
+                        <TH>Pontos</TH>
+                        <TH>Vitórias</TH>
+                        <TH>Derrotas</TH>
+                        <TH>N° GOLS</TH>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD>{copaDoMundo['A'][0]}</TD>
+                        <TD>{resultados[copaDoMundo['A'][0]][0]}</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>{resultados[copaDoMundo['A'][0]][0]}</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                <TR>
+                    <TD></TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+            </Tabela>
+            <Tabela>
+            
+                <tbody>
+                    <TR>
+                        <TH>País</TH>
+                        <TH>Pontos</TH>
+                        <TH>Vitórias</TH>
+                        <TH>Derrotas</TH>
+                        <TH>N° GOLS</TH>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+            </Tabela>
+            <Tabela>
+                            
+            <tbody>
+                    <TR>
+                        <TH>País</TH>
+                        <TH>Pontos</TH>
+                        <TH>Vitórias</TH>
+                        <TH>Derrotas</TH>
+                        <TH>N° GOLS</TH>
+                    </TR>
+                </tbody>
+                
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+            </Tabela>
+            <Tabela>
+            <tbody>
+                    <TR>
+                        <TH>País</TH>
+                        <TH>Pontos</TH>
+                        <TH>Vitórias</TH>
+                        <TH>Derrotas</TH>
+                        <TH>N° GOLS</TH>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+            </Tabela>
+            <Tabela>
+            
+            <tbody>
+                    <TR>
+                        <TH>País</TH>
+                        <TH>Pontos</TH>
+                        <TH>Vitórias</TH>
+                        <TH>Derrotas</TH>
+                        <TH>N° GOLS</TH>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+            </Tabela>
+            <Tabela>
+            <tbody>
+                    <TR>
+                        <TH>País</TH>
+                        <TH>Pontos</TH>
+                        <TH>Vitórias</TH>
+                        <TH>Derrotas</TH>
+                        <TH>N° GOLS</TH>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+            </Tabela>
+            <Tabela>
     
-       </div>
+            <tbody>
+                    <TR>
+                        <TH>País</TH>
+                        <TH>Pontos</TH>
+                        <TH>Vitórias</TH>
+                        <TH>Derrotas</TH>
+                        <TH>N° GOLS</TH>
+                    </TR>
+                </tbody>
+                <TR>
+                    <TD></TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                </TR>
+                <TR>
+                    <TD></TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                </TR>
+                <TR>
+                    <TD></TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                </TR>
+                <TR>
+                    <TD></TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                    <TD>teste</TD>
+                </TR>
+            </Tabela>
+            <Tabela>
+            <tbody>
+                    <TR>
+                        <TH>País</TH>
+                        <TH>Pontos</TH>
+                        <TH>Vitórias</TH>
+                        <TH>Derrotas</TH>
+                        <TH>N° GOLS</TH>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+                <tbody>
+                    <TR>
+                        <TD></TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                        <TD>teste</TD>
+                    </TR>
+                </tbody>
+            </Tabela>
+       </Tabelas>
        
        </>
     )
