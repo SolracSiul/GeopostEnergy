@@ -1,2 +1,2 @@
 # GeopostEnergy
-Repositório criado para o estágio na Geopost;
+Repositório criado para processo seletiovo na Geopost;
